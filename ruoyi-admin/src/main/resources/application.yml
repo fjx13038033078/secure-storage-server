@@ -116,6 +116,9 @@ security:
     - /*/api-docs
     - /*/api-docs/**
     - /warm-flow-ui/config
+    # 分享校验提取与免登录下载
+    - /secure/share/extract
+    - /secure/share/download
 
 # 多租户配置
 tenant:
