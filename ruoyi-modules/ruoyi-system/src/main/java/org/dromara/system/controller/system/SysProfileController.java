@@ -3,7 +3,7 @@ package org.dromara.system.controller.system;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.crypto.digest.BCrypt;
+import cn.hutool.crypto.digest.DigestUtil;
 import lombok.RequiredArgsConstructor;
 import org.dromara.common.core.domain.R;
 import org.dromara.common.core.utils.StringUtils;
@@ -93,13 +93,13 @@ public class SysProfileController extends BaseController {
     public R<Void> updatePwd(@Validated @RequestBody SysUserPasswordBo bo) {
         SysUserVo user = userService.selectUserById(LoginHelper.getUserId());
         String password = user.getPassword();
-        if (!BCrypt.checkpw(bo.getOldPassword(), password)) {
+        if (!DigestUtil.md5Hex(bo.getOldPassword()).equals(password)) {
             return R.fail("修改密码失败，旧密码错误");
         }
-        if (BCrypt.checkpw(bo.getNewPassword(), password)) {
+        if (DigestUtil.md5Hex(bo.getNewPassword()).equals(password)) {
             return R.fail("新密码不能与旧密码相同");
         }
-        int rows = DataPermissionHelper.ignore(() -> userService.resetUserPwd(user.getUserId(), BCrypt.hashpw(bo.getNewPassword())));
+        int rows = DataPermissionHelper.ignore(() -> userService.resetUserPwd(user.getUserId(), DigestUtil.md5Hex(bo.getNewPassword())));
         if (rows > 0) {
             return R.ok();
         }

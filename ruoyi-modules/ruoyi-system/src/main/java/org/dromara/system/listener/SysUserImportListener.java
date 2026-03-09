@@ -2,7 +2,7 @@ package org.dromara.system.listener;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.crypto.digest.BCrypt;
+import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.http.HtmlUtil;
 import cn.idev.excel.context.AnalysisContext;
 import cn.idev.excel.event.AnalysisEventListener;
@@ -48,7 +48,7 @@ public class SysUserImportListener extends AnalysisEventListener<SysUserImportVo
     public SysUserImportListener(Boolean isUpdateSupport) {
         String initPassword = SpringUtils.getBean(ISysConfigService.class).selectConfigByKey("sys.user.initPassword");
         this.userService = SpringUtils.getBean(ISysUserService.class);
-        this.password = BCrypt.hashpw(initPassword);
+        this.password = DigestUtil.md5Hex(initPassword);
         this.isUpdateSupport = isUpdateSupport;
         this.operUserId = LoginHelper.getUserId();
     }

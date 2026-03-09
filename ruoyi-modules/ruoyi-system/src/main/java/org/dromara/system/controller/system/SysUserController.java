@@ -4,7 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.crypto.digest.BCrypt;
+import cn.hutool.crypto.digest.DigestUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -173,7 +173,7 @@ public class SysUserController extends BaseController {
                 return R.fail("当前租户下用户名额不足，请联系管理员");
             }
         }
-        user.setPassword(BCrypt.hashpw(user.getPassword()));
+        user.setPassword(DigestUtil.md5Hex(user.getPassword()));
         return toAjax(userService.insertUser(user));
     }
 
@@ -237,7 +237,7 @@ public class SysUserController extends BaseController {
     public R<Void> resetPwd(@RequestBody SysUserBo user) {
         userService.checkUserAllowed(user.getUserId());
         userService.checkUserDataScope(user.getUserId());
-        user.setPassword(BCrypt.hashpw(user.getPassword()));
+        user.setPassword(DigestUtil.md5Hex(user.getPassword()));
         return toAjax(userService.resetUserPwd(user.getUserId(), user.getPassword()));
     }
 

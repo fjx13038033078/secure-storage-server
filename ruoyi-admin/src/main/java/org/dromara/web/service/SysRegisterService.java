@@ -1,6 +1,6 @@
 package org.dromara.web.service;
 
-import cn.hutool.crypto.digest.BCrypt;
+import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.dromara.common.core.constant.Constants;
@@ -55,7 +55,7 @@ public class SysRegisterService {
         SysUserBo sysUser = new SysUserBo();
         sysUser.setUserName(username);
         sysUser.setNickName(username);
-        sysUser.setPassword(BCrypt.hashpw(password));
+        sysUser.setPassword(DigestUtil.md5Hex(password));
         sysUser.setUserType(userType);
 
         boolean exist = TenantHelper.dynamic(tenantId, () -> {

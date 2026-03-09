@@ -3,7 +3,7 @@ package org.dromara.web.service.impl;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.stp.parameter.SaLoginParameter;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.crypto.digest.BCrypt;
+import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -64,7 +64,7 @@ public class PasswordAuthStrategy implements IAuthStrategy {
         }
         LoginUser loginUser = TenantHelper.dynamic(tenantId, () -> {
             SysUserVo user = loadUserByUsername(username);
-            loginService.checkLogin(LoginType.PASSWORD, tenantId, username, () -> !BCrypt.checkpw(password, user.getPassword()));
+            loginService.checkLogin(LoginType.PASSWORD, tenantId, username, () -> !DigestUtil.md5Hex(password).equals(user.getPassword()));
             // 此处可根据登录用户的数据不同 自行创建 loginUser
             return loginService.buildLoginUser(user);
         });

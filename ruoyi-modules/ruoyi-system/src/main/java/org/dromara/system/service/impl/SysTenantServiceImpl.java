@@ -5,7 +5,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
-import cn.hutool.crypto.digest.BCrypt;
+import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -156,7 +156,7 @@ public class SysTenantServiceImpl implements ISysTenantService {
         user.setTenantId(tenantId);
         user.setUserName(bo.getUsername());
         user.setNickName(bo.getUsername());
-        user.setPassword(BCrypt.hashpw(bo.getPassword()));
+        user.setPassword(DigestUtil.md5Hex(bo.getPassword()));
         user.setDeptId(deptId);
         userMapper.insert(user);
         //新增系统用户后，默认当前用户为部门的负责人
