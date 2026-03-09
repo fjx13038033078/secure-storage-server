@@ -357,6 +357,13 @@
                 <version>${revision}</version>
             </dependency>
 
+            <!--  安全存储模块  -->
+            <dependency>
+                <groupId>org.dromara</groupId>
+                <artifactId>ruoyi-secure</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
