@@ -1,6 +1,5 @@
 package org.dromara.secure.aspect;
 
-import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.ObjectUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -113,12 +112,11 @@ public class FileAuditLogAspect {
     }
 
     private Long resolveUserId() {
-        try {
-            StpUtil.checkLogin();
-            return StpUtil.getLoginIdAsLong();
-        } catch (Exception e) {
+        if (!LoginHelper.isLogin()) {
             return ANONYMOUS_USER_ID;
         }
+        Long userId = LoginHelper.getUserId();
+        return userId != null ? userId : ANONYMOUS_USER_ID;
     }
 
     private String resolveUserName() {

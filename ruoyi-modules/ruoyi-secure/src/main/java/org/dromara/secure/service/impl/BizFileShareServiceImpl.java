@@ -1,6 +1,6 @@
 package org.dromara.secure.service.impl;
 
-import cn.dev33.satoken.stp.StpUtil;
+import org.dromara.common.satoken.utils.LoginHelper;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
@@ -41,7 +41,7 @@ public class BizFileShareServiceImpl extends ServiceImpl<BizFileShareMapper, Biz
 
     @Override
     public BizFileShare createShare(Long fileId, Integer expireDays, Boolean needCode) {
-        Long userId = StpUtil.getLoginIdAsLong();
+        Long userId = LoginHelper.getUserId();
 
         BizUserFile bizUserFile = bizUserFileService.getById(fileId);
         if (ObjectUtil.isNull(bizUserFile)) {

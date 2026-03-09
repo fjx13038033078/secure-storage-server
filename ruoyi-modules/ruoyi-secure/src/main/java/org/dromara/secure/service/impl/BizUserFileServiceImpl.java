@@ -1,6 +1,6 @@
 package org.dromara.secure.service.impl;
 
-import cn.dev33.satoken.stp.StpUtil;
+import org.dromara.common.satoken.utils.LoginHelper;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -69,7 +69,7 @@ public class BizUserFileServiceImpl extends ServiceImpl<BizUserFileMapper, BizUs
             throw new ServiceException("上传文件不能为空");
         }
 
-        Long userId = StpUtil.getLoginIdAsLong();
+        Long userId = LoginHelper.getUserId();
         String originalFileName = file.getOriginalFilename();
         if (StringUtils.isBlank(originalFileName)) {
             originalFileName = "unknown";
@@ -126,7 +126,7 @@ public class BizUserFileServiceImpl extends ServiceImpl<BizUserFileMapper, BizUs
             throw new ServiceException("文件不存在");
         }
 
-        Long userId = StpUtil.getLoginIdAsLong();
+        Long userId = LoginHelper.getUserId();
         if (!userId.equals(bizUserFile.getUserId())) {
             throw new ServiceException("无权限下载该文件");
         }

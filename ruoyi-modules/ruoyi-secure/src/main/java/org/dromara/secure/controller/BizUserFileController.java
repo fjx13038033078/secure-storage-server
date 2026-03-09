@@ -1,6 +1,6 @@
 package org.dromara.secure.controller;
 
-import cn.dev33.satoken.stp.StpUtil;
+import org.dromara.common.satoken.utils.LoginHelper;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.dromara.common.core.domain.R;
@@ -39,7 +39,7 @@ public class BizUserFileController extends BaseController {
      */
     @GetMapping("/list")
     public TableDataInfo<BizUserFile> list(PageQuery pageQuery) {
-        Long userId = StpUtil.getLoginIdAsLong();
+        Long userId = LoginHelper.getUserId();
         return bizUserFileService.queryPageList(userId, pageQuery);
     }
 
